@@ -11,7 +11,7 @@ RUN ./rclone version
 # Begin final image
 FROM alpine:latest
 
-RUN apk --no-cache add ca-certificates fuse tzdata && \
+RUN apk --no-cache add ca-certificates fuse tzdata curl speedtest-cli && \
   echo "user_allow_other" >> /etc/fuse.conf
 
 COPY --from=builder /go/src/github.com/rclone/rclone/rclone /usr/local/bin/
@@ -22,3 +22,5 @@ ENTRYPOINT [ "rclone" ]
 
 WORKDIR /data
 ENV XDG_CONFIG_HOME=/config
+ENV http_proxy http://10.0.0.100:8118
+ENV https_proxy http://10.0.0.100:8118
